@@ -59,6 +59,9 @@ importers:
       vite:
         specifier: ^7.1.7
         version: 7.1.7(@types/node@24.5.2)(jiti@2.6.0)
+      vite-plugin-vue-svg-sprite:
+        specifier: ^0.0.1
+        version: 0.0.1(vite@7.1.7(@types/node@24.5.2)(jiti@2.6.0))
 
 packages:
 
@@ -1933,6 +1936,11 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+
+  vite-plugin-vue-svg-sprite@0.0.1:
+    resolution: {integrity: sha512-LxHx+I5fNlB66fXbI1yhuzxH13dUkpar7z7H3HFTp77KJJEXGpSleiGVL6/FI+sJHnIT5FEW893CjFeoBnC9XQ==}
+    peerDependencies:
+      vite: ^6.0.0
 
   vite@7.1.7:
     resolution: {integrity: sha512-VbA8ScMvAISJNJVbRDTJdCwqQoAareR/wutevKanhR2/1EkoXVZVkkORaYm/tNVCjP/UDTKtcw3bAkwOUdedmA==}
@@ -4059,6 +4067,10 @@ snapshots:
       punycode: 2.3.1
 
   util-deprecate@1.0.2: {}
+
+  vite-plugin-vue-svg-sprite@0.0.1(vite@7.1.7(@types/node@24.5.2)(jiti@2.6.0)):
+    dependencies:
+      vite: 7.1.7(@types/node@24.5.2)(jiti@2.6.0)
 
   vite@7.1.7(@types/node@24.5.2)(jiti@2.6.0):
     dependencies:
