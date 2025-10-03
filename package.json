@@ -1,0 +1,52 @@
+{
+  "name": "vite-plugin-vue-svg-sprite",
+  "description": "vite-plugin-vue-svg-sprite",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "vite build lib",
+    "build": "unbuild",
+    "release": "powershell ./publish.ps1"
+  },
+  "keywords": [],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "author": "ASH",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "src",
+    "license",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "vite": "^6.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
+    "@tsconfig/node20": "^20.1.6",
+    "@types/eslint__js": "^9.14.0",
+    "@types/node": "^24.5.2",
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "fast-glob": "^3.3.3",
+    "globals": "^16.4.0",
+    "prettier": "^3.6.2",
+    "tslib": "^2.8.1",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.44.1",
+    "unbuild": "^3.6.1",
+    "vite": "^7.1.7"
+  },
+  "packageManager": "pnpm@10.8.1+sha512.c50088ba998c67b8ca8c99df8a5e02fd2ae2e2b29aaf238feaa9e124248d3f48f9fb6db2424949ff901cffbb5e0f0cc1ad6aedb602cd29450751d11c35023677"
+}
