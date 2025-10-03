@@ -1,12 +1,13 @@
 {
   "name": "vite-plugin-vue-svg-sprite",
   "description": "vite-plugin-vue-svg-sprite",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "test": "vite build lib",
     "build": "unbuild",
-    "release": "powershell ./publish.ps1"
+    "release": "powershell ./publish.ps1",
+    "deploy": "npm publish --registry=https://registry.npmjs.org/"
   },
   "keywords": [],
   "main": "./dist/index.cjs",

@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite'
 import { resolve } from "path";
 import vue from '@vitejs/plugin-vue'
-import svgSpritePlugin from '../src/index'
+import svgSpritePlugin from 'vite-plugin-vue-svg-sprite';
+// import svgSpritePlugin from '../src/index'
 const svgPath = resolve(__dirname, "assets", "svg");
 
 export default defineConfig({
