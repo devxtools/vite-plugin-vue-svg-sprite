@@ -2,10 +2,14 @@ import { type ViteDevServer } from 'vite'
 import fs from 'fs';
 import path from 'path';
 import fg from 'fast-glob'
+import { fileURLToPath } from 'url';
 
-const sprite = fs.readFileSync(path.resolve(__dirname, 'utils/sprite.mjs'), 'utf-8');
-const svgs = fs.readFileSync(path.resolve(__dirname, 'components/svgs.mjs'), 'utf-8');
-const icon = fs.readFileSync(path.resolve(__dirname, 'components/icon.mjs'), 'utf-8');
+const __filename = fileURLToPath(import.meta.url);
+const __es_dirname = path.dirname(__filename);
+
+const sprite = fs.readFileSync(path.resolve(__es_dirname, 'utils/sprite.mjs'), 'utf-8');
+const svgs = fs.readFileSync(path.resolve(__es_dirname, 'components/svgs.mjs'), 'utf-8');
+const icon = fs.readFileSync(path.resolve(__es_dirname, 'components/icon.mjs'), 'utf-8');
 
 type OPTIONS = {
   dir?: string;
@@ -19,7 +23,7 @@ const moduleIds = {
 }
 
 function replacePath(code: string) {
-  return code.split('@/utils/sprite').join(path.resolve(__dirname, 'utils/sprite').replace(/\\/g, '/'));
+  return code.split('@/utils/sprite').join(path.resolve(__es_dirname, 'utils/sprite').replace(/\\/g, '/'));
 }
 
 function getFiles(dir: string) {
@@ -39,7 +43,7 @@ export default function (options: OPTIONS) {
   const svgs_resolvedModuleId = '\0' + moduleIds.svgs;
   const icon_resolvedModuleId = '\0' + moduleIds.icon;
 
-  const default_dir = path.resolve(__dirname, 'app', 'assets', 'svg');
+  const default_dir = path.resolve(__es_dirname, 'app', 'assets', 'svg');
   options = Object.assign({
     dir: default_dir,
     lazy: true,
