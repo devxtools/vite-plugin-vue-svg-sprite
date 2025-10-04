@@ -8,7 +8,6 @@ import svgSpritePlugin from '../dist/index.mjs';
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-console.log(svgSpritePlugin, 'svgSpritePlugin', __dirname)
 const svgPath = path.resolve(__dirname, "assets", "svg");
 
 export default defineConfig({

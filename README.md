@@ -1,19 +1,19 @@
-### 等等，太晚了，明天处理一个BUG先！
 
 # vite-plugin-vue-svg-sprite 
 
-> 一个支持 **动态按需加载 SVG**、**可配置懒加载** 的 Vite 插件。
-> 懒加载, 仅支持ES模块
+## ✨ **这是一个动态按需加载**、**与可配置懒加载的SVG插件**
+
+> 注意：本库 **仅支持 ES 模块 (ESM)**，不支持 CommonJS (`require`)。
   
 
 ---
 
 ## ✨ 特性
 
-- ⚡ **动态按需加载**：仅加载使用到的SVG  
+- ⚡ **动态按需加载**：仅加载使用到的SVG, 对SSR友好
 - 💤 **懒加载模式**：进入可视区域后再请求图标  
 - 🔥 **开发友好**：HMR 实时更新，改名/新增 SVG 即时生效  
-- 💄 **color**：style 修改， 一样是仅支持单色！
+- 💄 **color**：style修改，一样是仅支持单色！
 
 ---
 
@@ -30,15 +30,19 @@ npm i -D vite-plugin-vue-svg-sprite
 ```js
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { resolve } from "path";
 
 import svgSpritePlugin from 'vite-plugin-vue-svg-sprite';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 export default defineConfig({
   plugins: [
     vue(),
     svgSpritePlugin({
-      dir: resolve(__dirname, "assets", "svg")
+      dir: path.resolve(__dirname, "assets", "svg")
     })
   ]
 })
@@ -53,13 +57,13 @@ export default defineConfig({
 ## ⚙️ 在 app.vue 中配置：
 ```js
 <script setup lang="ts">
-// 引入插件提供的虚拟模块
-import SvgMaps from 'virtual:svgs-sprite'
+// 引入插件提供的虚拟模块svg集
+import Svgs from 'virtual:svgs'
 </script>
 <template>
     <div>
         <main></main>
-        <SvgMaps />
+        <Svgs />
     </div>
 </template>
 ```

@@ -19,8 +19,8 @@ importers:
         specifier: ^5.0.0
         version: 5.4.20
       vite-plugin-vue-svg-sprite:
-        specifier: ^0.0.2
-        version: 0.0.2(vite@5.4.20)
+        specifier: ^0.0.4
+        version: 0.0.4(vite@5.4.20)
       vue:
         specifier: ^3.3.0
         version: 3.5.22
@@ -381,8 +381,8 @@ packages:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
 
-  vite-plugin-vue-svg-sprite@0.0.2:
-    resolution: {integrity: sha512-h2UfbyWM+AS3Kir9TMDEd7ftA5WUZFnRQA/dmKqzbpFpBMFFx9jf2h3D2Bp71f4JzadcVemX3qTvaz9jjN/MXw==}
+  vite-plugin-vue-svg-sprite@0.0.4:
+    resolution: {integrity: sha512-5CeLxdLQmfP8BYosvj9qOP3/Bup2WLa+DGFJCpGA2V6iRA/IOLjbUwm1IXZKEiH65FLpDHEhfz9G239JIjKhZw==}
     peerDependencies:
       vite: ^6.0.0
 
@@ -724,7 +724,7 @@ snapshots:
 
   source-map-js@1.2.1: {}
 
-  vite-plugin-vue-svg-sprite@0.0.2(vite@5.4.20):
+  vite-plugin-vue-svg-sprite@0.0.4(vite@5.4.20):
     dependencies:
       vite: 5.4.20
 
