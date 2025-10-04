@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 
 // 注释不能删除，它是替换符
-/*! @__PURE__VAR__ */
+export const config = /*! __PURE__VAR__ */{}
 
 const modules: Record<string, unknown> = {
     /*@svg-modules@*/

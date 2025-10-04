@@ -1,5 +1,8 @@
-import { defineComponent, h } from 'vue'
-import { spriteSymbols } from '@/utils/sprite'
+import { defineComponent, h } from 'vue';
+import { spriteSymbols } from 'virtual:svgs-sprite'
+
+// 注释不能删除，它是替换符
+/*! __SPRITE__PATH__ */
 
 export default defineComponent({
   name: 'SvgSprite',

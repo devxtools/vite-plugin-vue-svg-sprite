@@ -2,11 +2,13 @@ import fs from 'fs';
 import path from 'path';
 import fg from 'fast-glob';
 
-const svgs = fs.readFileSync(path.resolve(__dirname, "components/svgs.js"), "utf-8");
-const icon = fs.readFileSync(path.resolve(__dirname, "components/icon.js"), "utf-8");
+const sprite = fs.readFileSync(path.resolve(__dirname, "utils/sprite.mjs"), "utf-8");
+const svgs = fs.readFileSync(path.resolve(__dirname, "components/svgs.mjs"), "utf-8");
+const icon = fs.readFileSync(path.resolve(__dirname, "components/icon.mjs"), "utf-8");
 const moduleIds = {
-  svgsSprite: "virtual:svgs-sprite",
-  svgIcon: "virtual:svg-icon"
+  sprite: "virtual:svgs-sprite",
+  svgs: "virtual:svgs",
+  icon: "virtual:svg-icon"
 };
 function replacePath(code) {
   return code.split("@/utils/sprite").join(path.resolve(__dirname, "utils/sprite").replace(/\\/g, "/"));
@@ -23,8 +25,9 @@ function getFiles(dir) {
   return objs;
 }
 function index(options) {
-  const svgsSprite_resolvedModuleId = "\0" + moduleIds.svgsSprite;
-  const svgIcon_resolvedModuleId = "\0" + moduleIds.svgIcon;
+  const sprite_resolvedModuleId = "\0" + moduleIds.sprite;
+  const svgs_resolvedModuleId = "\0" + moduleIds.svgs;
+  const icon_resolvedModuleId = "\0" + moduleIds.icon;
   const default_dir = path.resolve(__dirname, "app", "assets", "svg");
   options = Object.assign({
     dir: default_dir,
@@ -39,7 +42,7 @@ function index(options) {
       console.log(`[virtual:svgs-sprite] ${event}: ${file}`);
     }
     svgsImportModules = getFiles(options.dir);
-    const mod = server.moduleGraph.getModuleById(svgsSprite_resolvedModuleId);
+    const mod = server.moduleGraph.getModuleById(svgs_resolvedModuleId);
     if (mod) {
       server.moduleGraph.invalidateModule(mod);
       server.ws.send({
@@ -63,28 +66,29 @@ function index(options) {
       watcher.on("unlink", (file) => handleHotUpdate(server, file, "unlink"));
       watcher.on("change", (file) => handleHotUpdate(server, file, "change"));
     },
-    transform(code, id) {
-      if (id.endsWith("sprite.ts")) {
-        const regex = /\/\*! @__PURE__VAR__ \*\//g;
-        const _var_code = `export const config = ${JSON.stringify({ prefix: options.prefix })}`;
-        code = code.replace(regex, _var_code);
-        return code.replace(modulesRegex, `${svgsImportModules.join(",")}`);
-      }
-    },
     resolveId(id) {
-      if (id === moduleIds.svgsSprite) {
-        return svgsSprite_resolvedModuleId;
+      if (id === moduleIds.sprite) {
+        return sprite_resolvedModuleId;
       }
-      if (id === moduleIds.svgIcon) {
-        return svgIcon_resolvedModuleId;
+      if (id === moduleIds.svgs) {
+        return svgs_resolvedModuleId;
+      }
+      if (id === moduleIds.icon) {
+        return icon_resolvedModuleId;
       }
     },
     load(id) {
-      if (id === svgsSprite_resolvedModuleId) {
+      if (id === sprite_resolvedModuleId) {
+        const regex = /\/\*! __PURE__VAR__ \*\//g;
+        const _var_code = `${JSON.stringify({ prefix: options.prefix })}||`;
+        const code = sprite.replace(regex, _var_code);
+        return code.replace(modulesRegex, `${svgsImportModules.join(",")}`);
+      }
+      if (id === svgs_resolvedModuleId) {
         const svgsCode = replacePath(svgs);
         return `${svgsCode}`;
       }
-      if (id === svgIcon_resolvedModuleId) {
+      if (id === icon_resolvedModuleId) {
         const IconCode = replacePath(icon);
         return `${IconCode}`;
       }

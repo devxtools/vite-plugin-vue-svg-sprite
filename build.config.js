@@ -1,7 +1,12 @@
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
-  entries: ['src/index'],
+  entries: [
+    'src/index',
+    'src/utils/sprite.ts',
+    'src/components/svgs',
+    'src/components/icon',
+  ],
   clean: true,
   declaration: 'compatible',
   externals: [
@@ -31,8 +36,8 @@ export default defineBuildConfig({
     'vue'
   ],
   rollup: {
-    emitCJS: true,
-    inlineDependencies: false
+    emitCJS: false,
+    inlineDependencies: false,
   },
   failOnWarn: false,
   alias: {
