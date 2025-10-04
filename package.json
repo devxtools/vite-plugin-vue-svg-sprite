@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-vue-svg-sprite",
-  "description": "vite-plugin-vue-svg-sprite",
+  "description": "✨ 这是一个动态按需加载、可配置懒加载的SVG插件",
   "version": "1.0.1",
   "type": "module",
   "scripts": {
