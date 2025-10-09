@@ -2,8 +2,8 @@ import { defineConfig } from 'vite'
 import path from 'path';
 import { fileURLToPath } from 'url';
 import vue from '@vitejs/plugin-vue'
-import svgSpritePlugin from 'vite-plugin-vue-svg-sprite';
-// import svgSpritePlugin from '../dist/index.mjs';
+// import svgSpritePlugin from 'vite-plugin-vue-svg-sprite';
+import svgSpritePlugin from '../dist/index.mjs';
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)

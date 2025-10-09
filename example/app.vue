@@ -12,6 +12,7 @@ import SvgIcon from 'virtual:svg-icon'
             <SvgIcon name="add" />
             <SvgIcon name="add" />
             <SvgIcon name="add" />
+            <SvgIcon name="fex-icon" />
         </div>
         <main>
             <router-view />
