@@ -48,9 +48,9 @@ export default defineComponent({
         {
           ref: elRef,
           'aria-hidden': 'true',
-          style: {
-            color: props.color
-          }
+          // style: {
+          //   color: props.color
+          // }
         },
         h('use', {
           href: `#${config?.prefix}-${props.name}`,
