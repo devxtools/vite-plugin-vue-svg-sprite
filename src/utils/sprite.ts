@@ -47,7 +47,7 @@ export async function loadIcon(name: string) {
     if (!raw) return
     // 去掉 width / height
     raw = raw.replace(/<svg([^>]*)>/i, (match, attrs) => {
-        const newAttrs = attrs.replaceAll(/\s(width|height|fill)="[^"]*"/gi, '')
+        const newAttrs = attrs.replaceAll(/\s(width|height)="[^"]*"/gi, '')
         return `<svg${newAttrs}>`
     })
     raw = SvgFilter(raw);
