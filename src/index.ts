@@ -4,6 +4,8 @@ import path from 'path';
 import fg from 'fast-glob'
 import { fileURLToPath } from 'url';
 
+const green = '\x1b[32m'
+
 const __filename = fileURLToPath(import.meta.url);
 const __es_dirname = path.dirname(__filename);
 
@@ -50,41 +52,28 @@ export default function (options: OPTIONS) {
     prefix: 'sprite'
   }, options);
 
-  let svgsImportModules = getFiles(options.dir as string);
   const modulesRegex = new RegExp(`\\/\\*@svg-modules@\\*\\/`, 'g');
 
-  // HMR 处理
-  const handleHotUpdate = (server: ViteDevServer, file: string, event: string)=>  {
-    if (!file.endsWith('.svg')) return
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`[virtual:svgs-sprite] ${event}: ${file}`)
-    }
-    svgsImportModules = getFiles(options.dir!)
-    const mod = server.moduleGraph.getModuleById(svgs_resolvedModuleId)
-    if (mod) {
-      server.moduleGraph.invalidateModule(mod)
-      server.ws.send({
-        type: 'update',
-        updates: [{
-          type: 'js-update',
-          path: 'virtual:svgs-sprite',
-          acceptedPath: 'virtual:svgs-sprite',
-          timestamp: Date.now()
-        }]
-      })
-    }
-  }
- 
   return {
     name: "vite-plugin-vue-svg-sprite",
-    // 仅在开发环境下启用 HMR
-    configureServer(server) {
+    configureServer(server: ViteDevServer) {
       if (process.env.NODE_ENV !== 'development') return
-
-      const watcher = server.watcher // Vite 内置的 chokidar watcher
-      watcher.on('add', file => handleHotUpdate(server, file, 'add'))
-      watcher.on('unlink', file => handleHotUpdate(server, file, 'unlink'))
-      watcher.on('change', file => handleHotUpdate(server, file, 'change'))
+      const pagesDir = options.dir!
+      server.watcher.add(pagesDir)
+      server.watcher.on('all', (event: string, file: string) => {
+        if (file.endsWith('.svg') && file.startsWith(pagesDir)) {
+          const displayPath = path.relative(process.cwd(), file)
+          console.log(`↻ ${green}${event} ${displayPath}`)
+          // 让所有虚拟模块失效（强制重新编译）
+          const spriteModule = server.moduleGraph.getModuleById(sprite_resolvedModuleId)
+          const svgsModule = server.moduleGraph.getModuleById(svgs_resolvedModuleId)
+          const iconModule = server.moduleGraph.getModuleById(icon_resolvedModuleId)
+          const mods = [spriteModule, svgsModule, iconModule]
+          mods.forEach(m => m && server.moduleGraph.invalidateModule(m))
+          // 通知客户端刷新
+          server.ws.send({ type: 'full-reload', path: '*' })
+        }
+      })
     },
     resolveId(id: string) {
       if (id === moduleIds.sprite) {
@@ -99,11 +88,11 @@ export default function (options: OPTIONS) {
     },
     load(id: string) {
       if (id === sprite_resolvedModuleId) {
+        const svgs_string = getFiles(options.dir as string);
         const regex = /\/\*! __PURE__VAR__ \*\//g;
         const _var_code = `${JSON.stringify({ prefix: options.prefix })}||`;
         const code = sprite.replace(regex, _var_code);
-        return code.replace(modulesRegex, `${svgsImportModules.join(',')}`);
-        // return `${sprite}`;
+        return code.replace(modulesRegex, `${svgs_string.join(',')}`);
       }
       if (id === svgs_resolvedModuleId) {
         const svgsCode = replacePath(svgs);
@@ -113,6 +102,6 @@ export default function (options: OPTIONS) {
         const IconCode = replacePath(icon);
         return `${IconCode}`;
       }
-    },
+    }
   }
 }

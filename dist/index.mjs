@@ -3,6 +3,7 @@ import path from 'path';
 import fg from 'fast-glob';
 import { fileURLToPath } from 'url';
 
+const green = "\x1B[32m";
 const __filename = fileURLToPath(import.meta.url);
 const __es_dirname = path.dirname(__filename);
 const sprite = fs.readFileSync(path.resolve(__es_dirname, "utils/sprite.mjs"), "utf-8");
@@ -37,37 +38,25 @@ function index(options) {
     lazy: true,
     prefix: "sprite"
   }, options);
-  let svgsImportModules = getFiles(options.dir);
   const modulesRegex = new RegExp(`\\/\\*@svg-modules@\\*\\/`, "g");
-  const handleHotUpdate = (server, file, event) => {
-    if (!file.endsWith(".svg")) return;
-    if (process.env.NODE_ENV === "development") {
-      console.log(`[virtual:svgs-sprite] ${event}: ${file}`);
-    }
-    svgsImportModules = getFiles(options.dir);
-    const mod = server.moduleGraph.getModuleById(svgs_resolvedModuleId);
-    if (mod) {
-      server.moduleGraph.invalidateModule(mod);
-      server.ws.send({
-        type: "update",
-        updates: [{
-          type: "js-update",
-          path: "virtual:svgs-sprite",
-          acceptedPath: "virtual:svgs-sprite",
-          timestamp: Date.now()
-        }]
-      });
-    }
-  };
   return {
     name: "vite-plugin-vue-svg-sprite",
-    // 仅在开发环境下启用 HMR
     configureServer(server) {
       if (process.env.NODE_ENV !== "development") return;
-      const watcher = server.watcher;
-      watcher.on("add", (file) => handleHotUpdate(server, file, "add"));
-      watcher.on("unlink", (file) => handleHotUpdate(server, file, "unlink"));
-      watcher.on("change", (file) => handleHotUpdate(server, file, "change"));
+      const pagesDir = options.dir;
+      server.watcher.add(pagesDir);
+      server.watcher.on("all", (event, file) => {
+        if (file.endsWith(".svg") && file.startsWith(pagesDir)) {
+          const displayPath = path.relative(process.cwd(), file);
+          console.log(`\u21BB ${green}${event} ${displayPath}`);
+          const spriteModule = server.moduleGraph.getModuleById(sprite_resolvedModuleId);
+          const svgsModule = server.moduleGraph.getModuleById(svgs_resolvedModuleId);
+          const iconModule = server.moduleGraph.getModuleById(icon_resolvedModuleId);
+          const mods = [spriteModule, svgsModule, iconModule];
+          mods.forEach((m) => m && server.moduleGraph.invalidateModule(m));
+          server.ws.send({ type: "full-reload", path: "*" });
+        }
+      });
     },
     resolveId(id) {
       if (id === moduleIds.sprite) {
@@ -82,10 +71,11 @@ function index(options) {
     },
     load(id) {
       if (id === sprite_resolvedModuleId) {
+        const svgs_string = getFiles(options.dir);
         const regex = /\/\*! __PURE__VAR__ \*\//g;
         const _var_code = `${JSON.stringify({ prefix: options.prefix })}||`;
         const code = sprite.replace(regex, _var_code);
-        return code.replace(modulesRegex, `${svgsImportModules.join(",")}`);
+        return code.replace(modulesRegex, `${svgs_string.join(",")}`);
       }
       if (id === svgs_resolvedModuleId) {
         const svgsCode = replacePath(svgs);

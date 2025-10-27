@@ -1,6 +1,4 @@
 {
-  "include": ["src", "src/type.d.ts"],
-  "exclude": ["**/*.spec.ts"],
   "compilerOptions": {
     "outDir": "dist",
     "target": "ES2020",
@@ -14,5 +12,9 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "resolveJsonModule": true,
-  }
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "types": ["vite/client"],
+  },
+  "exclude": ["**/*.spec.ts"],
+  "include": ["src/**/*.vue", "src/type.d.ts"],
 }

@@ -54,6 +54,7 @@ export default defineComponent({
         },
         h('use', {
           href: `#${config?.prefix}-${props.name}`,
+          xhref: `#${config?.prefix}-${props.name}`,
         })
       )
   },
